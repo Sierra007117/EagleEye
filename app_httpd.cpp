@@ -62,8 +62,6 @@ static int8_t recognition_enabled = 0;
 static int8_t is_enrolling = 0;
 static face_id_list id_list = {0};
 
-extern boolean matchFace;
-
 static ra_filter_t * ra_filter_init(ra_filter_t * filter, size_t sample_size){
     memset(filter, 0, sizeof(ra_filter_t));
 
@@ -189,9 +187,7 @@ static int run_face_recognition(dl_matrix3du_t *image_matrix, box_array_t *net_b
             matched_id = recognize_face(&id_list, aligned_face);
             if (matched_id >= 0) {
                 Serial.printf("Match Face ID: %u\n", matched_id);
-                rgb_printf(image_matrix, FACE_COLOR_GREEN, "Hello Friend %u", matched_id);
-
-                matchFace=true;
+                rgb_printf(image_matrix, FACE_COLOR_GREEN, "Hello Subject %u", matched_id);
             } else {
                 Serial.println("No Match Found");
                 rgb_print(image_matrix, FACE_COLOR_RED, "Intruder Alert!");
