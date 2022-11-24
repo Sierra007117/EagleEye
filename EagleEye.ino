@@ -7,15 +7,16 @@
 
 void startCameraServer();
 
-void setup() {
+void setup()
+{
   Serial.begin(115200);
   Serial.setDebugOutput(true);
   Serial.println();
 
   pinMode(12, OUTPUT);
-  pinMode(13, OUTPUT);  
+  pinMode(13, OUTPUT);
   digitalWrite(12, HIGH);
-  digitalWrite(13, LOW);  
+  digitalWrite(13, LOW);
   camera_config_t config;
   config.ledc_channel = LEDC_CHANNEL_0;
   config.ledc_timer = LEDC_TIMER_0;
@@ -37,12 +38,15 @@ void setup() {
   config.pin_reset = RESET_GPIO_NUM;
   config.xclk_freq_hz = 20000000;
   config.pixel_format = PIXFORMAT_JPEG;
-  //init with high specs to pre-allocate larger buffers
-  if(psramFound()){
+  // init with high specs to pre-allocate larger buffers
+  if (psramFound())
+  {
     config.frame_size = FRAMESIZE_UXGA;
     config.jpeg_quality = 10;
     config.fb_count = 2;
-  } else {
+  }
+  else
+  {
     config.frame_size = FRAMESIZE_SVGA;
     config.jpeg_quality = 12;
     config.fb_count = 1;
@@ -55,19 +59,21 @@ void setup() {
 
   // camera init
   esp_err_t err = esp_camera_init(&config);
-  if (err != ESP_OK) {
+  if (err != ESP_OK)
+  {
     Serial.printf("Camera init failed with error 0x%x", err);
     return;
   }
 
-  sensor_t * s = esp_camera_sensor_get();
-  //initial sensors are flipped vertically and colors are a bit saturated
-  if (s->id.PID == OV3660_PID) {
-    s->set_vflip(s, 1);//flip it back
-    s->set_brightness(s, 1);//up the blightness just a bit
-    s->set_saturation(s, -2);//lower the saturation
+  sensor_t *s = esp_camera_sensor_get();
+  // initial sensors are flipped vertically and colors are a bit saturated
+  if (s->id.PID == OV3660_PID)
+  {
+    s->set_vflip(s, 1);       // flip it back
+    s->set_brightness(s, 1);  // up the blightness just a bit
+    s->set_saturation(s, -2); // lower the saturation
   }
-  //drop down frame size for higher initial frame rate
+  // drop down frame size for higher initial frame rate
   s->set_framesize(s, FRAMESIZE_QVGA);
 
 #if defined(CAMERA_MODEL_M5STACK_WIDE)
@@ -86,9 +92,9 @@ void setup() {
   Serial.print(WiFi.localIP());
   Serial.println("' to connect");
   digitalWrite(12, LOW);
-  digitalWrite(13, HIGH); 
+  digitalWrite(13, HIGH);
 }
 
-void loop() {
-
+void loop()
+{
 }
